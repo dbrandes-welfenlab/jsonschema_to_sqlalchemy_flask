@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "test1.schema.json",
+  "type": "object",
+  "properties": {
+    "str_field_fixed_length": {
+      "type": "string",
+      "maxLength": 256,
+      "showInRepr": true
+    }
+  },
+  "required": [
+    "str_field_fixed_length"
+  ]
+}

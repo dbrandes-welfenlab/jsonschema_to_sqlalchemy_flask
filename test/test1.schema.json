@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "test1.schema.json",
+  "type": "object",
+  "properties": {
+    "str_field_fixed_length": {
+      "type": "string",
+      "maxLength": 128,
+      "showInRepr": true
+    },
+    "txt_field": {
+      "type": "string"
+    },
+    "date_field_now": {
+      "type": "string",
+      "qlalchemytype": "DateTime",
+      "default": "datetime.utcnow"
+    },
+    "int_field": {
+      "type": "number",
+      "multipleOf":1
+    },
+    "bool_field": {
+      "type": "boolean"
+    },
+    "float_field": {
+      "type": "number"
+    },
+    "enum_field": {
+      "type": "string",
+      "enum": ["val0", "val1"]
+    },
+    "test2_id": {
+      "$ref":"test2.schema.json",
+      "backref_name": "tests1"
+    }
+  },
+  "required": [
+    "str_field_fixed_length",
+    "txt_field",
+    "date_field_now",
+    "bool_field",
+    "float_field",
+    "enum_field",
+    "test2_id"
+  ]
+}

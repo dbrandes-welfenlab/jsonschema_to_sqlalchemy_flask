@@ -1,0 +1,123 @@
+{
+"header":[
+{"line":"#!/usr/bin/python3"},
+{"line":""},
+{"line":"from flask import Flask"},
+{"line":"from flask_admin import Admin"},
+{"line":"from flask_admin.contrib.sqla import ModelView"},
+{"line":"from flask_sqlalchemy import SQLAlchemy"},
+{"line":"import enum"},
+{"line":"from datetime import datetime"},
+{"line":""},
+{"line":"app = Flask(__name__)"},
+{"line":""},
+{"line":"app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'"},
+{"line":"app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'"},
+{"line":"app.config['TESTING'] = True"},
+{"line":"app.config['SECRET_KEY'] = '0123456789'"},
+{"line":""},
+{"line":"db = SQLAlchemy(app)"}],
+
+"enums":[
+{
+"name":"EnumFieldEnum",
+"values":[
+{"name":"val0","value":"0"},
+{"name":"val1","value":"1"}]
+}],
+
+"models":[
+{
+"name":"Test1",
+"columns":[
+{
+"name":"id",
+"type":"Integer",
+"is_pk":true
+},
+{
+"name":"str_field_fixed_length",
+"type":"String(128)",
+"is_not_nullable":true
+},
+{
+"name":"txt_field",
+"type":"Text",
+"is_not_nullable":true
+},
+{
+"name":"date_field_now",
+"type":"DateTime",
+"is_not_nullable":true,
+"default":{"value":"datetime.utcnow"}
+},
+{
+"name":"int_field",
+"type":"Integer"
+},
+{
+"name":"bool_field",
+"type":"Boolean",
+"is_not_nullable":true
+},
+{
+"name":"float_field",
+"type":"Float",
+"is_not_nullable":true
+},
+{
+"name":"enum_field",
+"type":"Enum(EnumFieldEnum)",
+"is_not_nullable":true
+}],
+"foreign_columns":[
+{
+"column_name":"test2_id",
+"type":"Integer",
+"small_foreign_name":"test2",
+"foreign_key":"id",
+"is_not_nullable":true,
+"foreign_name":"Test2",
+"backref":{"small_own_names":"tests1"},
+"lazy":true
+}],
+"repr":{
+"str":"Test1 {}",
+"has_format":{
+"format_lst":[{
+"first":true,
+"value":"self.str_field_fixed_length"
+}]}}},
+{
+"name":"Test2",
+"columns":[
+{
+"name":"id",
+"type":"Integer",
+"is_pk":true
+},
+{
+"name":"str_field_fixed_length",
+"type":"String(256)",
+"is_not_nullable":true
+}],
+"foreign_columns":[],
+"repr":{
+"str":"Test2 {}",
+"has_format":{
+"format_lst":[{
+"first":true,
+"value":"self.str_field_fixed_length"
+}]}}}],
+
+"middle":[
+{"line":"admin = Admin(app, name='test', template_mode='bootstrap3')"}],
+
+"admin_lines":[
+{"name":"Test1"},
+{"name":"Test2"}],
+
+"footer":[
+{"line":"if __name__ == '__main__':"},
+{"line":"    app.run()"}]
+}
