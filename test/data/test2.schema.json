@@ -3,13 +3,13 @@
   "$id": "test1.schema.json",
   "type": "object",
   "properties": {
-    "str_field_fixed_length": {
+    "name": {
       "type": "string",
       "maxLength": 256,
-      "showInRepr": true
+      "isPK": true
     }
   },
   "required": [
-    "str_field_fixed_length"
+    "name"
   ]
 }

@@ -17,12 +17,12 @@ class {{name}}(db.Model):
 
 {{#foreign_columns}}
     {{column_name}} = db.Column(db.{{type}}, db.ForeignKey('{{small_foreign_name}}.{{foreign_key}}'){{#is_not_nullable}}, nullable=False{{/is_not_nullable}})
-    {{small_foreign_name}} = db.relationship("{{foreign_name}}"{{#backref}}, backref=db.backref("{{small_own_names}}"{{/backref}}{{#lazy}}, lazy=True{{/lazy}}))
+    {{small_foreign_name}} = db.relationship('{{foreign_name}}'{{#backref}}, backref=db.backref('{{small_own_names}}'{{/backref}}{{#lazy}}, lazy=True{{/lazy}}))
 {{/foreign_columns}}
 
 {{#repr}}
     def __repr__(self):
-        return "{{str}}"{{#has_format}}.format({{#format_lst}}{{^first}}, {{/first}}{{value}}{{/format_lst}}){{/has_format}}
+        return '{{str}}'{{#has_format}}.format({{#format_lst}}{{^first}}, {{/first}}{{value}}{{/format_lst}}){{/has_format}}
 {{/repr}}
 
 {{/models}}

@@ -1,52 +1,66 @@
+#!/usr/bin/python3
+
 import unittest
-from difflib import Differ
+import difflib
+import json
 
 from src.convert_to_sqlalchemy_flask import insert_from_file
 from src.convert_from_json_schema import convert_flask_admin
-
-import json
-import yaml
-
-def check_equal(difference):
-    equal = True
-    for line in difference:
-        if not line.startswith("  "):
-            equal = False
-    return equal
+from test.helper.create_database import delete_and_recreate_database
+from test.expected_output.create_from_json import create_from_json
+from test.expected_output.dump_to_json import dump_to_json
 
 def check_diff(txt1, txt2):
-    d = Differ()
-    difference = d.compare(txt1.split("\n"), txt2.split("\n"))
-    if check_equal(difference):
-        return True
-    for line in difference:
-         print (line)
-    return False
-         
-filename_list = ["test/test1.schema.json", "test/test2.schema.json"]
-converted_filename = "test/converted.json"
-expected_result_filename = "test/result.py"
-         
-class TestFromJsonSchema(unittest.TestCase):
-    def test_convert(self):
+    diff = difflib.ndiff(txt1.splitlines(), txt2.splitlines())
+    equal = True
+    lines = []
+    for line in diff:
+        lines.append(line)
+        if line.startswith("+") or line.startswith("-"):
+            equal = False
+    if not equal:
+        for line in lines:
+            print(line)
+    return equal
+    
+def json_load(filename):
+    with open(filename) as filehandle:
+        return json.load(filehandle)
+
+converted_filename = "test/expected_output/converted.json"
+expected_filename = "test/expected_output/result.py"
+name_filename_pk_list = [
+    {"name": "test2", "data": "test/data/test2.json","pk": "test2"},
+    {"name": "test1", "data": "test/data/test1.json","pk": "test1"}] #Order is important!
+schema_filename_list = ["test/data/test1.schema.json", "test/data/test2.schema.json"]
+
+
+class TestJsonSchemaToSQLAlchemy(unittest.TestCase):
+    def test_to_sql_alchemy(self):
         self.maxDiff = None
-        calculated_converted_data = convert_flask_admin(filename_list)
+        res_data = insert_from_file(converted_filename)
+        with open(expected_filename) as expected_file:
+            expected = expected_file.read()
+        files_equal = check_diff(res_data, expected)
+        self.assertTrue(files_equal)
         
-        with open(converted_filename) as converted_file:
-            readed_converted_data = json.loads(converted_file.read())
-            
-        self.assertEqual(calculated_converted_data,readed_converted_data)
+    def test_from_json_schema(self):
+        self.maxDiff = None
+        res_data = convert_flask_admin(schema_filename_list)
+        converted = json_load(converted_filename)
+        if converted != res_data:
+            with open("/tmp/json_schema_to_sqlalchemy_flask_res_data.json","w") as fh:
+                fh.write(json.dumps(res_data))
+        self.assertEqual(converted,res_data)
         
-class TestToSQLAlechemyFlask(unittest.TestCase):
-    def test_convert(self):
-        with open(expected_result_filename) as expected_result_file:
-            expected_result = expected_result_file.read()
-
-        result = insert_from_file(converted_filename)
-        
-        self.assertTrue(check_diff(result, expected_result))
-        
-
+    def test_run_test_expected(self):
+        delete_and_recreate_database()
+        create_from_json(name_filename_pk_list, json_load)
+        for d in name_filename_pk_list:
+            expected = json_load(d["data"])
+            res_data = dump_to_json(d["name"], d["pk"])
+            self.assertEqual(expected,res_data)
+    
 if __name__ == "__main__":
     unittest.main()
-
+    

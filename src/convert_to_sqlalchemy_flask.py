@@ -1,7 +1,7 @@
 import sys
 import json
 
-template_filename = "template.mustache"
+template_filename = "templates/template.mustache"
 
 from chevron.renderer import render
 

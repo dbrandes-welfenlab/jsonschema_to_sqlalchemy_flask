@@ -10,9 +10,10 @@ from datetime import datetime
 app = Flask(__name__)
 
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/json_schema_to_sqlalchemy_flask_test.db'
 app.config['TESTING'] = True
 app.config['SECRET_KEY'] = '0123456789'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
@@ -21,8 +22,7 @@ class EnumFieldEnum(enum.Enum):
     val1 = 1
 
 class Test1(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    str_field_fixed_length = db.Column(db.String(128), nullable=False)
+    str_field_fixed_length_as_pk = db.Column(db.String(128), primary_key=True, nullable=False)
     txt_field = db.Column(db.Text, nullable=False)
     date_field_now = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     int_field = db.Column(db.Integer)
@@ -30,19 +30,18 @@ class Test1(db.Model):
     float_field = db.Column(db.Float, nullable=False)
     enum_field = db.Column(db.Enum(EnumFieldEnum), nullable=False)
 
-    test2_id = db.Column(db.Integer, db.ForeignKey('test2.id'), nullable=False)
-    test2 = db.relationship("Test2", backref=db.backref("tests1", lazy=True))
+    test2_name = db.Column(db.Integer, db.ForeignKey('test2.name'), nullable=False)
+    test2 = db.relationship('Test2', backref=db.backref('tests1', lazy=True))
 
     def __repr__(self):
-        return "Test1 {}".format(self.str_field_fixed_length)
+        return 'Test1 {}'.format(self.str_field_fixed_length_as_pk)
 
 class Test2(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    str_field_fixed_length = db.Column(db.String(256), nullable=False)
+    name = db.Column(db.String(256), primary_key=True, nullable=False)
 
 
     def __repr__(self):
-        return "Test2 {}".format(self.str_field_fixed_length)
+        return 'Test2 {}'.format(self.name)
 
 admin = Admin(app, name='test', template_mode='bootstrap3')
 

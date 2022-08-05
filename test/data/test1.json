@@ -1,0 +1,10 @@
+{
+    "str_field_fixed_length_as_pk":"test1",
+    "txt_field":"text",
+    "date_field_now":"01.01.00 01:02:03",
+    "int_field":2,
+    "bool_field": true,
+    "float_field": 0.5,
+    "enum_field": "val1",
+    "test2_name": "test2"
+}

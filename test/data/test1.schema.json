@@ -3,10 +3,10 @@
   "$id": "test1.schema.json",
   "type": "object",
   "properties": {
-    "str_field_fixed_length": {
+    "str_field_fixed_length_as_pk": {
       "type": "string",
       "maxLength": 128,
-      "showInRepr": true
+      "isPK": true
     },
     "txt_field": {
       "type": "string"
@@ -30,18 +30,18 @@
       "type": "string",
       "enum": ["val0", "val1"]
     },
-    "test2_id": {
+    "test2_name": {
       "$ref":"test2.schema.json",
       "backref_name": "tests1"
     }
   },
   "required": [
-    "str_field_fixed_length",
+    "str_field_fixed_length_as_pk",
     "txt_field",
     "date_field_now",
     "bool_field",
     "float_field",
     "enum_field",
-    "test2_id"
+    "test2_name"
   ]
 }
