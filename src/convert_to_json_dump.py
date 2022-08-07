@@ -2,7 +2,7 @@ import sys
 import json
 import argparse
 
-template_filename = "templates/flask_template.mustache"
+template_filename = "templates/dump_to_json_template.mustache"
 
 from chevron.renderer import render
 
@@ -16,7 +16,7 @@ def read_json(filename):
         return json.load(filehandle)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="convert preprocessed json to sqlalchemy_flask.")
+    parser = argparse.ArgumentParser(description="convert preprocessed json to json dump python code.")
     parser.add_argument("--input_filename","-i", required=True, help='filename of the preprocessed json file.')
     parser.add_argument("--output_filename","-o", help='filename of the output file.')
 

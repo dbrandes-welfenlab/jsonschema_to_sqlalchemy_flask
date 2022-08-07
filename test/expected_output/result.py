@@ -22,7 +22,8 @@ class EnumFieldEnum(enum.Enum):
     val1 = 1
 
 class Test1(db.Model):
-    str_field_fixed_length_as_pk = db.Column(db.String(128), primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    str_field_fixed_length_as_unique_name = db.Column(db.String(128), unique=True, nullable=False)
     txt_field = db.Column(db.Text, nullable=False)
     date_field_now = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     int_field = db.Column(db.Integer)
@@ -34,10 +35,11 @@ class Test1(db.Model):
     test2 = db.relationship('Test2', backref=db.backref('tests1', lazy=True))
 
     def __repr__(self):
-        return 'Test1 {}'.format(self.str_field_fixed_length_as_pk)
+        return 'Test1 {}'.format(self.str_field_fixed_length_as_unique_name)
 
 class Test2(db.Model):
-    name = db.Column(db.String(256), primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256), unique=True, nullable=False)
 
 
     def __repr__(self):

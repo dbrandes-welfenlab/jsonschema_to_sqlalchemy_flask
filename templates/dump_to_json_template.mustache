@@ -1,0 +1,30 @@
+#!/usr/bin/python3
+
+from .result import db{{#models}}, {{camel_name}}{{/models}}
+import json
+import argparse
+
+{{#models}}
+def dump_{{snake_name}}(unique_name):
+    {{snake_name}} = {{camel_name}}.query.filter_by({{snake_unique_name}}=unique_name).first()
+    assert({{snake_name}} is not None)
+    res = {}
+    {{#columns}}
+    res["{{snake_name}}"] = {{model_snake_name}}.{{snake_name}}{{#needs_conversion_to_json}}{{convert_end}}{{/needs_conversion_to_json}}
+    {{/columns}}
+    {{#foreign_columns}}
+    res["{{snake_name}}"] = {{model_snake_name}}.{{snake_name}}{{#needs_conversion_to_json}}{{convert_end}}{{/needs_conversion_to_json}}
+    {{/foreign_columns}}
+    return res
+
+{{/models}}
+def dump_to_json(name, unique_name):
+    {{#models}}
+    if name == "{{snake_name}}":
+        return dump_{{snake_name}}(unique_name)
+    {{/models}}
+
+if __name__ == "__main__":
+    pass
+    
+

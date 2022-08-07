@@ -1,27 +1,29 @@
 {
     "admin_lines": [
         {
-            "name": "Test1"
+            "camel_name": "Test1"
         },
         {
-            "name": "Test2"
+            "camel_name": "Test2"
         }
     ],
     "enums": [
         {
-            "name": "EnumFieldEnum",
+            "camel_name": "EnumFieldEnum",
             "values": [
                 {
-                    "name": "val0",
+                    "unchanged_name": "val0",
                     "value": "0"
                 },
                 {
-                    "name": "val1",
+                    "unchanged_name": "val1",
                     "value": "1"
                 }
             ]
         }
     ],
+    "contains_time": true,
+    "flask_file":"result",
     "footer": [
         {
             "line": "if __name__ == '__main__':"
@@ -93,16 +95,28 @@
     ],
     "models": [
         {
+            "id_column": [
+                {
+                    "model_snake_name":"test1",
+                    "snake_name": "id",
+                    "unchanged_name": "id",
+                    "type": "Integer"
+                }
+            ],
             "columns": [
                 {
                     "is_not_nullable": true,
-                    "is_pk": true,
-                    "name": "str_field_fixed_length_as_pk",
+                    "unique": true,
+                    "model_snake_name":"test1",
+                    "snake_name": "str_field_fixed_length_as_unique_name",
+                    "unchanged_name": "str_field_fixed_length_as_unique_name",
                     "type": "String(128)"
                 },
                 {
                     "is_not_nullable": true,
-                    "name": "txt_field",
+                    "model_snake_name":"test1",
+                    "snake_name": "txt_field",
+                    "unchanged_name": "txt_field",
                     "type": "Text"
                 },
                 {
@@ -110,50 +124,78 @@
                         "value": "datetime.utcnow"
                     },
                     "is_not_nullable": true,
-                    "name": "date_field_now",
-                    "type": "DateTime"
+                    "model_snake_name":"test1",
+                    "snake_name": "date_field_now",
+                    "unchanged_name": "date_field_now",
+                    "type": "DateTime",
+                    "needs_conversion_from_json":
+                    {
+                        "convert_begin": "datetime.strptime(",
+                        "convert_end": ",'%d.%m.%y %H:%M:%S')"
+                    },
+                    "needs_conversion_to_json":
+                    {
+                        "convert_end": ".strftime('%d.%m.%y %H:%M:%S')"
+                    }
                 },
                 {
-                    "name": "int_field",
+                    "model_snake_name":"test1",
+                    "snake_name": "int_field",
+                    "unchanged_name": "int_field",
                     "type": "Integer"
                 },
                 {
                     "is_not_nullable": true,
-                    "name": "bool_field",
+                    "model_snake_name":"test1",
+                    "snake_name": "bool_field",
+                    "unchanged_name": "bool_field",
                     "type": "Boolean"
                 },
                 {
                     "is_not_nullable": true,
-                    "name": "float_field",
+                    "model_snake_name":"test1",
+                    "snake_name": "float_field",
+                    "unchanged_name": "float_field",
                     "type": "Float"
                 },
                 {
                     "is_not_nullable": true,
-                    "name": "enum_field",
-                    "type": "Enum(EnumFieldEnum)"
+                    "model_snake_name":"test1",
+                    "snake_name": "enum_field",
+                    "unchanged_name": "enum_field",
+                    "type": "Enum(EnumFieldEnum)",
+                    "needs_conversion_to_json":
+                    {
+                        "convert_end": ".name"
+                    }
                 }
             ],
             "foreign_columns": [
                 {
                     "backref": {
-                        "small_own_names": "tests1"
+                        "snake_own_names": "tests1"
                     },
-                    "column_name": "test2_name",
-                    "foreign_key": "name",
-                    "foreign_name": "Test2",
+                    "model_snake_name":"test1",
+                    "snake_name": "test2_name",
+                    "unchanged_name": "test2_name",
+                    "snake_foreign_key": "name",
+                    "camel_foreign_name": "Test2",
+                    "snake_foreign_name": "test2",
                     "is_not_nullable": true,
                     "lazy": true,
-                    "small_foreign_name": "test2",
-                    "type": "Integer"
+                    "type": "Integer",
+                    "very_last": true
                 }
             ],
-            "name": "Test1",
+            "camel_name": "Test1",
+            "snake_name": "test1",
+            "snake_unique_name":"str_field_fixed_length_as_unique_name",
             "repr": {
                 "has_format": {
                     "format_lst": [
                         {
                             "first": true,
-                            "value": "self.str_field_fixed_length_as_pk"
+                            "value": "self.str_field_fixed_length_as_unique_name"
                         }
                     ]
                 },
@@ -161,16 +203,29 @@
             }
         },
         {
+            "id_column": [
+                {
+                    "model_snake_name":"test2",
+                    "snake_name": "id",
+                    "unchanged_name": "id",
+                    "type": "Integer"
+                }
+            ],
             "columns": [
                 {
-                    "is_pk": true,
+                    "unique": true,
                     "is_not_nullable": true,
-                    "name": "name",
-                    "type": "String(256)"
+                    "model_snake_name":"test2",
+                    "snake_name": "name",
+                    "unchanged_name": "name",
+                    "type": "String(256)",
+                    "very_last": true
                 }
             ],
             "foreign_columns": [],
-            "name": "Test2",
+            "camel_name": "Test2",
+            "snake_name": "test2",
+            "snake_unique_name":"name",
             "repr": {
                 "has_format": {
                     "format_lst": [

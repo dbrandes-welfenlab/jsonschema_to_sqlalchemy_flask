@@ -3,17 +3,18 @@
   "$id": "test1.schema.json",
   "type": "object",
   "properties": {
-    "str_field_fixed_length_as_pk": {
+    "str_field_fixed_length_as_unique_name": {
       "type": "string",
       "maxLength": 128,
-      "isPK": true
+      "uniqueName": true
     },
     "txt_field": {
       "type": "string"
     },
     "date_field_now": {
       "type": "string",
-      "qlalchemytype": "DateTime",
+      "sqlalchemytype": "DateTime",
+      "format":"%d.%m.%y %H:%M:%S",
       "default": "datetime.utcnow"
     },
     "int_field": {
@@ -36,7 +37,7 @@
     }
   },
   "required": [
-    "str_field_fixed_length_as_pk",
+    "str_field_fixed_length_as_unique_name",
     "txt_field",
     "date_field_now",
     "bool_field",

@@ -1,0 +1,36 @@
+#!/usr/bin/python3
+
+from .{{flask_file}} import db{{#models}}, {{camel_name}}{{/models}}
+import json
+import argparse
+
+{{#contains_time}}
+from datetime import datetime
+{{/contains_time}}
+
+{{#models}}
+def add_{{snake_name}}(json_data):
+    {{snake_name}} = {{camel_name}}(
+        {{#columns}}
+        {{snake_name}} = {{#needs_conversion_from_json}}{{convert_begin}}{{/needs_conversion_from_json}}json_data["{{unchanged_name}}"]{{#needs_conversion_from_json}}{{convert_end}}{{/needs_conversion_from_json}}{{^very_last}},{{/very_last}}
+        {{/columns}}
+        {{#foreign_columns}}
+        {{snake_name}} = {{#needs_conversion_from_json}}{{convert_begin}}{{/needs_conversion_from_json}}json_data["{{unchanged_name}}"]{{#needs_conversion_from_json}}{{convert_end}}{{/needs_conversion_from_json}}{{^very_last}},{{/very_last}}
+        {{/foreign_columns}}
+        )
+    
+    db.session.add({{snake_name}})
+    db.session.commit()
+
+{{/models}}
+def create_from_json(name_data_dict_list, preprocess = lambda x:x):
+    for name_data_dict in name_data_dict_list:
+        {{#models}}
+        if name_data_dict["name"] == "{{snake_name}}":
+            add_{{snake_name}}(preprocess(name_data_dict["data"]))
+        {{/models}}
+                
+if __name__ == "__main__":
+    pass
+    #parser = argparse.Parser()
+    #parser.add_

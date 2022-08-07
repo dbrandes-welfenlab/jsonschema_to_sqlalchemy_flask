@@ -6,7 +6,7 @@
     "name": {
       "type": "string",
       "maxLength": 256,
-      "isPK": true
+      "uniqueName": true
     }
   },
   "required": [

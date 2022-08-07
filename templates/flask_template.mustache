@@ -1,0 +1,42 @@
+{{#header}}
+{{line}}
+{{/header}}
+
+{{#enums}}
+class {{camel_name}}(enum.Enum):
+{{#values}}
+    {{unchanged_name}} = {{value}}
+{{/values}}
+{{/enums}}
+
+{{#models}}
+class {{camel_name}}(db.Model):
+{{#id_column}}
+    {{snake_name}} = db.Column(db.{{type}}, primary_key=True{{#default}}, default={{value}}{{/default}})
+{{/id_column}}
+{{#columns}}
+    {{snake_name}} = db.Column(db.{{type}}{{#unique}}, unique=True{{/unique}}{{#is_not_nullable}}, nullable=False{{/is_not_nullable}}{{#default}}, default={{value}}{{/default}})
+{{/columns}}
+
+{{#foreign_columns}}
+    {{snake_name}} = db.Column(db.{{type}}, db.ForeignKey('{{snake_foreign_name}}.{{snake_foreign_key}}'){{#is_not_nullable}}, nullable=False{{/is_not_nullable}})
+    {{snake_foreign_name}} = db.relationship('{{camel_foreign_name}}'{{#backref}}, backref=db.backref('{{snake_own_names}}'{{/backref}}{{#lazy}}, lazy=True{{/lazy}}))
+{{/foreign_columns}}
+
+{{#repr}}
+    def __repr__(self):
+        return '{{str}}'{{#has_format}}.format({{#format_lst}}{{^first}}, {{/first}}{{value}}{{/format_lst}}){{/has_format}}
+{{/repr}}
+
+{{/models}}
+{{#middle}}
+{{line}}
+{{/middle}}
+
+{{#admin_lines}}
+admin.add_view(ModelView({{camel_name}}, db.session))
+{{/admin_lines}}
+
+{{#footer}}
+{{line}}
+{{/footer}}

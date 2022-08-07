@@ -1,0 +1,21 @@
+#!/usr/bin/python3
+
+from .result import db{{#models}}, {{camel_name}}{{/models}}
+import json
+import argparse
+
+{{#models}}
+def get_unique_name_list_{{snake_name}}():
+    return [{{snake_name}}.{{snake_unique_name}} for {{snake_name}} in {{camel_name}}.query]
+
+{{/models}}
+def get_unique_name_list(name):
+    {{#models}}
+    if name == "{{snake_name}}":
+        return get_unique_name_list_{{snake_name}}()
+    {{/models}}
+
+if __name__ == "__main__":
+    pass
+    
+
