@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import os
-from test.expected_output.result import db
+from jsonschema_to_sqlalchemy_flask.test.expected_output.result import db
 
 def delete_and_recreate_database():
     try:

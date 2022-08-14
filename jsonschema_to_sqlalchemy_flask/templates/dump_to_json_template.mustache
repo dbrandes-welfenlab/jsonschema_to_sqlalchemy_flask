@@ -25,6 +25,16 @@ def dump_to_json(name, unique_name):
     {{/models}}
 
 if __name__ == "__main__":
-    pass
-    
+    parser = argparse.ArgumentParser(description="get order for adding input data.")
+    parser.add_argument("--modelname","-m", required=True, help='snakecase names of the models to be get.')
+    parser.add_argument("--uniquename","-u", required=True, help='unique name of the object to get.')
+    parser.add_argument("--output_filename","-o", help='filename of the output file.')
 
+    args = parser.parse_args()
+    
+    output = dump_to_json(args.modelname, args.uniquename)
+    if args.output_filename is not None:
+        with open(args.output_filename,"w") as output_file:
+            output_file.write(json.dumps(output))
+    else:
+        print(output)

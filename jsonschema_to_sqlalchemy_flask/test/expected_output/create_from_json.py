@@ -35,8 +35,17 @@ def create_from_json(name_data_dict_list, preprocess = lambda x:x):
             add_test1(preprocess(name_data_dict["data"]))
         if name_data_dict["name"] == "test2":
             add_test2(preprocess(name_data_dict["data"]))
-                
+
+def json_load(filename):
+    with open(filename) as filehandle:
+        return json.load(filehandle)
+
 if __name__ == "__main__":
-    pass
-    #parser = argparse.Parser()
-    #parser.add_
+    parser = argparse.ArgumentParser(description="fill data in database from a json file.")
+    parser.add_argument("--input_filename","-i", required=True, nargs='+', help='filenames of the input json files.')
+    parser.add_argument("--modelname","-m", required=True, nargs='+', help='snakecase names of the models to be filled with data.')
+
+    args = parser.parse_args()
+    
+    name_data_dict_list = [{"name":name, "data": filename} for (name,filename) in zip(args.modelname,args.input_filename)]
+    create_from_json(args.input_filename,name_data_dict_list,json_load)

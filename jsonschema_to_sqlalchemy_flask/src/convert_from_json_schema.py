@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
-import json
 import re
+import argparse
+
+from .file_handling import txt_load, json_load, txt_write
 
 pattern = re.compile(r'(?<!^)(?=[A-Z])')
 
@@ -177,13 +179,13 @@ def get_filedir(filepath):
         return rs[0] + "/"
     return ""
 
-def preprocess_with_filename(filename):
+def preprocess_with_filename(filename, external=True):
     filedir = get_filedir(filename)
     def is_foreign(foreign_filename):
         return filename == filedir + foreign_filename
     return {
         "snake_name": camel_case_to_snake_case(filename_without_extension(filename)),
-        "schema_data": read_json(filename),
+        "schema_data": json_load(filename, external),
         "is_foreign": is_foreign}
 
 def get_foreign_schema(data_list_preprocessed, foreign_name):
@@ -231,20 +233,11 @@ def convert_flask_admin(data_list, output_flask_file, preprocess = preprocess_wi
     middle_filename = "templates/middle.py"
     footer_filename = "templates/footer.py"
     
-    with open(header_filename) as header_file:
-        header_data = header_file.read()
-    
-    with open(middle_filename) as middle_file:
-        middle_data = middle_file.read()
-    
-    with open(footer_filename) as footer_file:
-        footer_data = footer_file.read()
+    header_data = txt_load(header_filename)
+    middle_data = txt_load(middle_filename)
+    footer_data = txt_load(footer_filename)
     
     return convert(data_list, header_data, middle_data, footer_data, output_flask_file, preprocess, lazy)
-
-def read_json(filename):
-    with open(filename) as filehandle:
-        return json.load(filehandle)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="convert json schema files to preprocessed json.")
@@ -255,9 +248,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     output = convert_flask_admin(args.input_filename, args.output_flask_file)
+
     if args.output_filename is not None:
-        with open(args.output_filename,"w") as output_file:
-            output_file.write(output)
+        txt_write(output, args.output_filename)
     else:
         print(output)
 

@@ -1,0 +1,30 @@
+#!/usr/bin/python3
+
+from .result import db{{#models}}, {{camel_name}}{{/models}}
+import json
+import argparse
+
+{{#models}}
+def get_unique_name_list_{{snake_name}}():
+    return [{{snake_name}}.{{snake_unique_name}} for {{snake_name}} in {{camel_name}}.query]
+
+{{/models}}
+def get_unique_name_list(name):
+    {{#models}}
+    if name == "{{snake_name}}":
+        return get_unique_name_list_{{snake_name}}()
+    {{/models}}
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="get unique names in database for the given model.")
+    parser.add_argument("--modelname","-m", required=True, help='snakecase name of the model to get unique names from.')
+    parser.add_argument("--output_filename","-o", help='filename of the output file.')
+
+    args = parser.parse_args()
+    
+    output = get_unique_name_list(args.modelname)
+    if args.output_filename is not None:
+        with open(args.output_filename,"w") as output_file:
+            output_file.write(json.dumps(output))
+    else:
+        print(output)

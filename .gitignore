@@ -1,3 +1,7 @@
 local_runscript.sh
+local_install_script.sh
+.python-version
+*.egg-info
 __pycache__
-
+.pytest_cache
+jsonschema_to_sqlalchemy_flask/version.py
