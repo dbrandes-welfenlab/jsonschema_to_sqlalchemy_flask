@@ -6,3 +6,4 @@ __pycache__
 .pytest_cache
 jsonschema_to_sqlalchemy_flask/version.py
 dist
+build
