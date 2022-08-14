@@ -5,3 +5,4 @@ local_install_script.sh
 __pycache__
 .pytest_cache
 jsonschema_to_sqlalchemy_flask/version.py
+dist
