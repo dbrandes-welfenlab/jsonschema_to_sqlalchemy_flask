@@ -35,7 +35,8 @@ generated (if they are generated), so the interface is updated
 accordingly. The default location of the database is the “/tmp”
 directory, so data should be read and saved elsewhere after creation.
 
-For use this project insert the following in your code:
+For use this project, create a dir, for example test_js2sf, create an
+empty **init**.py file there, insert the following in your code:
 
 .. code:: python
 
@@ -52,7 +53,7 @@ to import all stuff and
 
    schema_filename_list = ["filename1.schema.json", "filename2.schema.json"]
    flask_filename_without_extension = "flask_main_file"
-   flask_filename = "flask_main_file.py"
+   flask_filename = "test_js2sf/flask_main_file.py"
 
    data = convert_flask_admin(schema_filename_list, flask_filename_without_extension)
 
@@ -62,7 +63,7 @@ filename2.schema.json), and after:
 
 .. code:: python
 
-   flask_file = convert_to_sqlalchemy_flask.insert_in_template
+   flask_file = convert_to_sqlalchemy_flask.insert_in_template(data)
    with open(flask_filename, "w") as fh:
        fh.write(flask_file)
 
@@ -76,24 +77,25 @@ and
    order_list = get_order(data)
 
 to get the python code from. After saving these files (for example
-“json_load.py”, “json_dump.py” and “name_list.py”) and set executable
-bit, they could be called from commandline as follows:
+“test_js2sf/json_load.py”, “test_js2sf/json_dump.py” and
+“test_js2sf/name_list.py”), they could be called from commandline as
+follows:
 
 .. code:: bash
 
-   ./json_load.py --input_filename filename1.json --modelname filename1
+   python -m test_js2sf.json_load --input_filename filename1.json --modelname filename1
 
 with existing filename1.json contains data that fits the
 filename1.schema.json and its unique name contains “name1” and
 
 .. code:: bash
 
-   ./json_dump.py --modelname filename1 --uniquename "name1" --output_filename "equal_to_filename1.json"
+   python -m test_js2sf.json_dump.py --modelname filename1 --uniquename "name1" --output_filename "equal_to_filename1.json"
 
 or
 
 .. code:: bash
 
-   ./name_list.py --modelname filename1
+   python -m test_js2sf.name_list.py --modelname filename1
 
 to get all unique names for filename1.schema.json data in database.

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from .result import db{{#models}}, {{camel_name}}{{/models}}
+from .{{flask_file}} import db{{#models}}, {{camel_name}}{{/models}}
 import json
 import argparse
 

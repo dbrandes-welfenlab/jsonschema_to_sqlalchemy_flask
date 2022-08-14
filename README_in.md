@@ -18,7 +18,7 @@ This script converts a couple of connected (with filenames $ref) flat (without n
 Each JSON schema description should contain one variable that is marked with "uniqueName": true that contains a unique name for this entry. This name should be used to reference this datafield from other JSON Schemas with "$ref":"FILENAME.schema.json" (see jsonschema_to_sqlalchemy_flask/test/data folder for a simple example). The scripts could be used in the process when the JSON schemas are generated (if they are generated), so the interface is updated accordingly.
 The default location of the database is the "/tmp" directory, so data should be read and saved elsewhere after creation.
 
-For use this project insert the following in your code:
+For use this project, create a dir, for example test_js2sf, create an empty __init__.py file there, insert the following in your code:
 
 ```python
 from jsonschema_to_sqlalchemy_flask.src import convert_to_sqlalchemy_flask
@@ -35,7 +35,7 @@ to import all stuff and
 ```python
 schema_filename_list = ["filename1.schema.json", "filename2.schema.json"]
 flask_filename_without_extension = "flask_main_file"
-flask_filename = "flask_main_file.py"
+flask_filename = "test_js2sf/flask_main_file.py"
 
 data = convert_flask_admin(schema_filename_list, flask_filename_without_extension)
 
@@ -44,7 +44,7 @@ data = convert_flask_admin(schema_filename_list, flask_filename_without_extensio
 to get an intermediate data structure for getting the python code (with existing JSON Schema files filename1.schema.json and filename2.schema.json), and after:
 
 ```python
-flask_file = convert_to_sqlalchemy_flask.insert_in_template
+flask_file = convert_to_sqlalchemy_flask.insert_in_template(data)
 with open(flask_filename, "w") as fh:
     fh.write(flask_file)
 ```
@@ -58,23 +58,23 @@ unique_name_list_file = convert_to_unique_name_list_getter.insert_in_template(da
 order_list = get_order(data)
 ```
 
-to get the python code from. After saving these files (for example "json_load.py", "json_dump.py" and "name_list.py") and set executable bit,
+to get the python code from. After saving these files (for example "test_js2sf/json_load.py", "test_js2sf/json_dump.py" and "test_js2sf/name_list.py"),
 they could be called from commandline as follows:
 
 ```bash
-./json_load.py --input_filename filename1.json --modelname filename1
+python -m test_js2sf.json_load --input_filename filename1.json --modelname filename1
 ```
 
 with existing filename1.json contains data that fits the filename1.schema.json and its unique name contains "name1" and
 
 ```bash
-./json_dump.py --modelname filename1 --uniquename "name1" --output_filename "equal_to_filename1.json"
+python -m test_js2sf.json_dump.py --modelname filename1 --uniquename "name1" --output_filename "equal_to_filename1.json"
 ```
 
 or
 
 ```bash
-./name_list.py --modelname filename1
+python -m test_js2sf.name_list.py --modelname filename1
 ```
 
 to get all unique names for filename1.schema.json data in database.
