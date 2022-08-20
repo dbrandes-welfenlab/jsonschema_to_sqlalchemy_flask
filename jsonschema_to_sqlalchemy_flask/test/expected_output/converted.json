@@ -183,7 +183,7 @@
                     "snake_foreign_name": "test2",
                     "is_not_nullable": true,
                     "lazy": true,
-                    "type": "Integer",
+                    "type": "String(256)",
                     "very_last": true
                 }
             ],

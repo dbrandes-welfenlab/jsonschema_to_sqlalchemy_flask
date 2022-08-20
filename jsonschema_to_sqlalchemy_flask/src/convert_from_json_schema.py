@@ -71,13 +71,13 @@ def convert_to_column(prop, snake_name, unchanged_name, model_snake_name, is_not
 def convert_to_foreign_column(prop, snake_name, unchanged_name, model_snake_name, foreign_keys, is_not_nullable, lazy):
     ref = prop["$ref"]
     camel_foreign_name = snake_case_to_camel_case(filename_without_extension(ref))
-    foreign_key = foreign_keys[ref]
+    foreign_key_and_type = foreign_keys[ref]
     res = {
-        "type":"Integer",
+        "type":foreign_key_and_type[1],
         "snake_name": snake_name,
         "unchanged_name": unchanged_name,
         "model_snake_name": model_snake_name,
-        "snake_foreign_key": camel_case_to_snake_case(foreign_key),
+        "snake_foreign_key": camel_case_to_snake_case(foreign_key_and_type[0]),
         "camel_foreign_name": camel_foreign_name,
         "snake_foreign_name": camel_case_to_snake_case(filename_without_extension(ref)),
         "lazy": lazy}
@@ -104,7 +104,7 @@ def get_foreign_keys(foreign_schemas):
     for foreign_name in foreign_schemas:
         schema = foreign_schemas[foreign_name]
         properties = schema["properties"]
-        unique_names = [prop_key for prop_key in properties if is_unique_name(properties[prop_key])]
+        unique_names = [(prop_key,get_type(properties[prop_key], camel_case_to_snake_case(prop_key))) for prop_key in properties if is_unique_name(properties[prop_key])]
         assert len(unique_names) == 1, "Foreign files should contain exactly one unique name field!"
         res[foreign_name] = unique_names[0]
     return res

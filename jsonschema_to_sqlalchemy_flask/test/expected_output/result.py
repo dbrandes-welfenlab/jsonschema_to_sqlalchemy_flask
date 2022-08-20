@@ -31,7 +31,7 @@ class Test1(db.Model):
     float_field = db.Column(db.Float, nullable=False)
     enum_field = db.Column(db.Enum(EnumFieldEnum), nullable=False)
 
-    test2_name = db.Column(db.Integer, db.ForeignKey('test2.name'), nullable=False)
+    test2_name = db.Column(db.String(256), db.ForeignKey('test2.name'), nullable=False)
     test2 = db.relationship('Test2', backref=db.backref('tests1', lazy=True))
 
     def __repr__(self):

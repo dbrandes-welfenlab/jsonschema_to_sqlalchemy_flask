@@ -99,3 +99,20 @@ or
    python -m test_js2sf.name_list.py --modelname filename1
 
 to get all unique names for filename1.schema.json data in database.
+
+Install
+-------
+
+install with pip (python 3.10 and new pip version needed):
+
+.. code:: bash
+
+   pip install jsonschema-to-sqlalchemy-flask
+
+Links
+-----
+
+-  `Github
+   Repo <https://github.com/dbrandes-welfenlab/jsonschema_to_sqlalchemy_flask>`__
+-  `example
+   Repo <https://github.com/dbrandes-welfenlab/test_jsonschema_to_sqlalchemy_flask>`__
