@@ -1,5 +1,6 @@
 local_runscript.sh
 local_install_script.sh
+local_build_and_upload_script.sh
 .python-version
 *.egg-info
 __pycache__
